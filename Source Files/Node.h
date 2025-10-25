@@ -10,8 +10,11 @@ class Node {
     T data;
     Node* left;
     Node* right;
+    int height;
+    int bf;
 
     public:
+    Node();
     Node(T data);
 };
 
