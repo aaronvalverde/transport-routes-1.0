@@ -20,3 +20,7 @@ void User::print(){
     cout << "Edad: " << age << endl;
     cout << "Saldo: " << balance << endl;
 }
+
+string User::getName(){
+    return name;
+}

@@ -15,6 +15,7 @@ class User {
     User();
     User(long ID, string name, int age, long balance);
     void print();
+    string getName();
 };
 
 

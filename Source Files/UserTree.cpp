@@ -120,7 +120,7 @@ void UserTree<T>::add(Node<User>*& root, User* user){
 }
 
 template <typename T>
-Node<T> UserTree<T>::find(Node<User>* root, User* user){
+Node<User> UserTree<T>::find(Node<User>* root, User* user){
     if(!root){
         return;
     }
@@ -162,4 +162,27 @@ void UserTree<T>::postOrder(Node<User>* root){
     postOrder(root->left);
     postOrder(root->right);
     cout << root->data.print();
+}
+
+template <typename T>
+void UserTree<T>::addToList(Node<User>* root){
+    if(!root){
+        return;
+    }
+    users.push_back(root);
+    addToList(root->left);
+    addToList(root->right);
+}
+
+template <typename T>
+void UserTree<T>::printAlphabetically(Node<User>* root){
+    addToList(root);
+    users.sort(users.begin(), users.end(),
+                [](const User&a, const User&b){
+                    return a.getName() < b.getName();
+                });
+    
+    for (auto& user : users){
+        user.print();
+    }
 }
