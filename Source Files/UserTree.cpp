@@ -140,7 +140,58 @@ void UserTree<T>::remove(Node<User>*& root, User* value){
     if(!root){
         return;
     }
-    //TODO
+    if(value->ID < root->data.ID){
+        remove(root->left, value);
+    }
+    else if(value->ID > root->data.ID){
+        remove(root->right, value);
+    }
+    else {
+        if(!root->left || !root->right){
+            Node<User>* temp = root->left ? root->left : root->right;
+            if(!temp){
+                delete root;
+                root = nullptr;
+            } else {
+                Node<User>* toRemove = root;
+                root = temp;
+                delete toRemove;
+            }
+        } else {
+            Node<User>* temp = root->right;
+            while(temp->left){
+                temp = temp->left;
+            }
+            root->data = temp->data;
+            User tempUser;
+            tempUser.ID = temp->data.ID;
+            remove(root->right, &tempUser);
+        }
+    }
+
+    if(!root) {
+        return;
+    }
+
+    updateHeight(root);
+    updateBF(root);
+
+    if (root->bf < -1){
+        if(root->left && root->left->bf <= 0){
+            LL(root);
+        } 
+        else if (root->left){
+            LR(root);
+        }
+    }
+    else if(root->bf > 1){
+        if(root->right && root->right->bf >= 0){
+            RR(root);
+        }
+        else if (root->right){
+            RL(root);
+        }
+    }
 }
 
 template <typename T>
