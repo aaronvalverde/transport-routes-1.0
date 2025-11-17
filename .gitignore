@@ -43,3 +43,9 @@
 #vs code
 *.vs
 *.vscode
+
+#cmake 
+*.cmake
+
+#build folder
+build/
