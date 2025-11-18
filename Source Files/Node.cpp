@@ -2,7 +2,7 @@
 
 template <typename T>
 Node<T>::Node(){
-    data = null;
+    data = T(); 
     left = nullptr;
     right = nullptr;
     height = 0;

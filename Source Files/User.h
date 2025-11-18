@@ -15,7 +15,12 @@ class User {
     User();
     User(long ID, string name, int age, long balance);
     void print();
+
+    long getID();
     string getName();
+    int getAge();
+    long getBalance();
+    void setBalance(long balance);
 };
 
 

@@ -12,10 +12,24 @@ Route::Route(string routeName, vector<string> stops, int** routeMatrix, int size
         this->stops.push_back(name);
     }
 
+    this->routeMatrix = new int*[size];
+    for(int i = 0; i < size; i++){
+        this->routeMatrix[i] = new int[size];
+    }
+
     for (int i = 0; i < size; i++){
-        for (int j = 0; i < size; i++){
+        for (int j = 0; j < size; j++){ 
             this->routeMatrix[i][j] = routeMatrix[i][j];
         }
+    }
+}
+
+Route::~Route(){
+    if(routeMatrix != nullptr){
+        for(int i = 0; i < size; i++){
+            delete[] routeMatrix[i];
+        }
+        delete[] routeMatrix;
     }
 }
 

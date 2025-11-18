@@ -16,6 +16,7 @@ class Route {
     public:
     Route(string routeName);
     Route(string routeName, vector<string> stops, int** routeMatrix, int size);
+    ~Route();
 
     void printStops();
     void printRoute();

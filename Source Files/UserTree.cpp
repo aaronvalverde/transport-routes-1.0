@@ -4,14 +4,13 @@ template <typename T>
 int UserTree<T>::getMax(int leftHeight, int rightHeight){
     if(leftHeight > rightHeight){
         return leftHeight;
-        return;
     }
     return rightHeight;
 }
 
 template <typename T>
 void UserTree<T>::updateHeight(Node<User>*& root){
-   int leftHeight, righHeight = 0;
+   int leftHeight = 0, rightHeight = 0;  
    if(root->left == nullptr){
     leftHeight = 0;
    } else {
@@ -20,18 +19,18 @@ void UserTree<T>::updateHeight(Node<User>*& root){
    }
 
    if(root->right == nullptr){
-    righHeight = 0;
+    rightHeight = 0;  
    } else {
     updateHeight(root->right);
-    righHeight = root->right->height;
+    rightHeight = root->right->height;  
    }
 
-   root->height = getMax(leftHeight, righHeight) + 1;
+   root->height = getMax(leftHeight, rightHeight) + 1;
 }
 
 template <typename T>
 void UserTree<T>::updateBF(Node<User>*& root){
-   int leftHeight, righHeight = 0;
+   int leftHeight, rightHeight = 0; 
    if(root->left == nullptr){
     leftHeight = 0;
    } else {
@@ -40,22 +39,22 @@ void UserTree<T>::updateBF(Node<User>*& root){
    }
 
    if(root->right == nullptr){
-    righHeight = 0;
+    rightHeight = 0; 
    } else {
     updateBF(root->right);
-    righHeight = root->right->height;
+    rightHeight = root->right->height; 
    }
 
-   root->bf = righHeight - leftHeight;
+   root->bf = rightHeight - leftHeight;
 }
 
 template <typename T>
 void UserTree<T>::LL(Node<User>*& root){
-    Node<T>* aux = root->left;
+    Node<User>* aux = root->left;
     root->left = aux->right;
     aux->right = root;
     root = aux;
-
+ 
     updateHeight(root->right);
     updateHeight(root);
     updateBF(root->right);
@@ -64,7 +63,7 @@ void UserTree<T>::LL(Node<User>*& root){
 
 template <typename T>
 void UserTree<T>::RR(Node<User>*& root){
-    Node<T>* aux = root->right;
+    Node<User>* aux = root->right;
     root->right = aux->left;
     aux->left = root;
     root = aux;
@@ -90,7 +89,7 @@ void UserTree<T>::RL(Node<User>*& root){
 template <typename T>
 void UserTree<T>::add(Node<User>*& root, User* user){
     if(!root){
-        root = new Node(user);
+        root = new Node<User>(*user);
     }
     else if (root->data.ID > user->ID){
        add(root->left, user);
@@ -105,7 +104,7 @@ void UserTree<T>::add(Node<User>*& root, User* user){
         if (root->left->bf < 0){
             LL(root);
         }
-        if(root->left->bf > 0){
+        else if(root->left->bf > 0){
             LR(root);
         }
     }
@@ -113,26 +112,24 @@ void UserTree<T>::add(Node<User>*& root, User* user){
         if(root->right->bf > 0){
             RR(root);
         }
-        if(root->right->bf < 0){
+        else if(root->right->bf < 0){
             RL(root);
         }
     }
 }
 
 template <typename T>
-Node<User> UserTree<T>::find(Node<User>* root, User* user){
+Node<User>* UserTree<T>::find(Node<User>* root, User* user){ 
     if(!root){
-        return;
+        return nullptr;  
     }
     if (root->data.ID == user->ID){
-        return root;
-        return;
+        return root; 
     }
     if(root->data.ID > user->ID){
-        find(root->left, user);
-        return;
+        return find(root->left, user);  
     }
-    find(root->right, user);
+    return find(root->right, user);
 }
 
 template <typename T>
@@ -196,6 +193,7 @@ void UserTree<T>::remove(Node<User>*& root, User* value){
 
 template <typename T>
 void UserTree<T>::preOrder(Node<User>* root){
+    if(!root) return;
     cout << root->data.print();
     preOrder(root->left);
     preOrder(root->right);
@@ -203,6 +201,7 @@ void UserTree<T>::preOrder(Node<User>* root){
 
 template <typename T>
 void UserTree<T>::inOrder(Node<User>* root){
+    if(!root) return;
     inOrder(root->left);
     cout << root->data.print();
     inOrder(root->right);
@@ -210,6 +209,7 @@ void UserTree<T>::inOrder(Node<User>* root){
 
 template <typename T>
 void UserTree<T>::postOrder(Node<User>* root){
+    if(!root) return;
     postOrder(root->left);
     postOrder(root->right);
     cout << root->data.print();
@@ -227,13 +227,14 @@ void UserTree<T>::addToList(Node<User>* root){
 
 template <typename T>
 void UserTree<T>::printAlphabetically(Node<User>* root){
+    users.clear();
     addToList(root);
-    users.sort(users.begin(), users.end(),
-                [](const User&a, const User&b){
-                    return a.getName() < b.getName();
+    std::sort(users.begin(), users.end(), 
+                [](const Node<User>* a, const Node<User>* b){
+                    return a->data.getName() < b->data.getName();
                 });
     
     for (auto& user : users){
-        user.print();
+        user->data.print();
     }
 }

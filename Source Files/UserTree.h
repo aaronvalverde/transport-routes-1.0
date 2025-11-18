@@ -20,7 +20,7 @@ class UserTree {
     void LR(Node<User>*& root);
     void RL(Node<User>*& root);
     void add(Node<User>*& root, User* user);
-    Node<User> find(Node<User>* root, User* user);
+    Node<User>* find(Node<User>* root, User* user);
     void remove(Node<User>*& root, User* user);
     void preOrder(Node<User>* root);
     void inOrder(Node<User>* root);
