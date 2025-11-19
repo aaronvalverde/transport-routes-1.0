@@ -1,4 +1,35 @@
-#include "UserTree.h"
+#ifndef BINARYTREE_H
+#define BINARYTREE_H
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <list>
+#include "User.h"
+#include "Node.h"
+
+using namespace std;
+
+template <typename T>
+class UserTree {
+private:
+    list<User> users;
+public:
+    int getMax(int leftHeight, int rightHeight);
+    void updateHeight(Node<User>*& root);
+    void updateBF(Node<User>*& root);
+    void LL(Node<User>*& root);
+    void RR(Node<User>*& root);
+    void LR(Node<User>*& root);
+    void RL(Node<User>*& root);
+    void add(Node<User>*& root, User* user);
+    Node<User>* find(Node<User>* root, User* user);
+    void remove(Node<User>*& root, User* user);
+    void preOrder(Node<User>* root);
+    void inOrder(Node<User>* root);
+    void postOrder(Node<User>* root);
+    void printAlphabetically(Node<User>* root);
+    void addToListHelper(Node<User>* root, vector<User>& users);
+};
 
 template <typename T>
 int UserTree<T>::getMax(int leftHeight, int rightHeight){
@@ -30,7 +61,7 @@ void UserTree<T>::updateHeight(Node<User>*& root){
 
 template <typename T>
 void UserTree<T>::updateBF(Node<User>*& root){
-   int leftHeight, rightHeight = 0; 
+   int leftHeight = 0, rightHeight = 0; 
    if(root->left == nullptr){
     leftHeight = 0;
    } else {
@@ -91,7 +122,7 @@ void UserTree<T>::add(Node<User>*& root, User* user){
     if(!root){
         root = new Node<User>(*user);
     }
-    else if (root->data.ID > user->ID){
+    else if (root->data.getID() > user->getID()){
        add(root->left, user);
     } else {
        add(root->right, user);
@@ -123,10 +154,10 @@ Node<User>* UserTree<T>::find(Node<User>* root, User* user){
     if(!root){
         return nullptr;  
     }
-    if (root->data.ID == user->ID){
+    if (root->data.getID() == user->getID()){
         return root; 
     }
-    if(root->data.ID > user->ID){
+    if(root->data.getID() > user->getID()){
         return find(root->left, user);  
     }
     return find(root->right, user);
@@ -137,10 +168,10 @@ void UserTree<T>::remove(Node<User>*& root, User* value){
     if(!root){
         return;
     }
-    if(value->ID < root->data.ID){
+    if(value->getID() < root->data.getID()){
         remove(root->left, value);
     }
-    else if(value->ID > root->data.ID){
+    else if(value->getID() > root->data.getID()){
         remove(root->right, value);
     }
     else {
@@ -160,8 +191,7 @@ void UserTree<T>::remove(Node<User>*& root, User* value){
                 temp = temp->left;
             }
             root->data = temp->data;
-            User tempUser;
-            tempUser.ID = temp->data.ID;
+            User tempUser(temp->data.getID(), "", 0, 0);
             remove(root->right, &tempUser);
         }
     }
@@ -194,7 +224,7 @@ void UserTree<T>::remove(Node<User>*& root, User* value){
 template <typename T>
 void UserTree<T>::preOrder(Node<User>* root){
     if(!root) return;
-    cout << root->data.print();
+    root->data.print();
     preOrder(root->left);
     preOrder(root->right);
 }
@@ -203,7 +233,7 @@ template <typename T>
 void UserTree<T>::inOrder(Node<User>* root){
     if(!root) return;
     inOrder(root->left);
-    cout << root->data.print();
+    root->data.print();
     inOrder(root->right);
 }
 
@@ -212,29 +242,31 @@ void UserTree<T>::postOrder(Node<User>* root){
     if(!root) return;
     postOrder(root->left);
     postOrder(root->right);
-    cout << root->data.print();
-}
-
-template <typename T>
-void UserTree<T>::addToList(Node<User>* root){
-    if(!root){
-        return;
-    }
-    users.push_back(root);
-    addToList(root->left);
-    addToList(root->right);
+    root->data.print();
 }
 
 template <typename T>
 void UserTree<T>::printAlphabetically(Node<User>* root){
-    users.clear();
-    addToList(root);
-    std::sort(users.begin(), users.end(), 
-                [](const Node<User>* a, const Node<User>* b){
-                    return a->data.getName() < b->data.getName();
-                });
+    vector<User> users;
+    addToListHelper(root, users);
     
-    for (auto& user : users){
-        user->data.print();
+    sort(users.begin(), users.end(),
+         [](const User& a, const User& b){
+             return a.getName() < b.getName();
+         });
+    
+    for(auto& user : users){
+        user.print();
     }
 }
+
+template <typename T>
+void UserTree<T>::addToListHelper(Node<User>* root, vector<User>& users){
+    if(!root) return;
+    
+    users.push_back(root->data);
+    addToListHelper(root->left, users);
+    addToListHelper(root->right, users);
+}
+
+#endif

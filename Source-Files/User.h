@@ -17,7 +17,7 @@ class User {
     void print();
 
     long getID();
-    string getName();
+    string getName() const;
     int getAge();
     long getBalance();
     void setBalance(long balance);

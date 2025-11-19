@@ -25,7 +25,7 @@ long User::getID(){
     return ID;
 }
 
-string User::getName(){
+string User::getName() const{
     return name;
 }
 
