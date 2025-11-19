@@ -26,7 +26,6 @@ Route::Route(string routeName, vector<string> stops, int** routeMatrix, int size
     }
 }
 
-// Constructor de copia
 Route::Route(const Route& other){
     this->routeName = other.routeName;
     this->stops = other.stops;
@@ -45,10 +44,8 @@ Route::Route(const Route& other){
     }
 }
 
-// Operador de asignación
 Route& Route::operator=(const Route& other){
     if(this != &other){
-        // Liberar memoria existente
         if(routeMatrix != nullptr){
             for(int i = 0; i < size; i++){
                 delete[] routeMatrix[i];
@@ -56,12 +53,10 @@ Route& Route::operator=(const Route& other){
             delete[] routeMatrix;
         }
         
-        // Copiar datos
         this->routeName = other.routeName;
         this->stops = other.stops;
         this->size = other.size;
         
-        // Copiar matriz
         if(other.routeMatrix != nullptr){
             this->routeMatrix = new int*[size];
             for(int i = 0; i < size; i++){

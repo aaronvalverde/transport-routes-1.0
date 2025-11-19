@@ -1,0 +1,6 @@
+1001, Aarón Valverde, 20, 300000
+1002, Cristhofer Murillo, 23, 240000
+1003, María Quesada, 58, 35000
+1004, Melanie Martínez, 19, 33000
+1005, Simón Barboza, 28, 45000
+1006, Anllelyn Quesada, 23, 20000

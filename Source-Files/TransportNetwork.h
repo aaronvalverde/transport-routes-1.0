@@ -21,7 +21,7 @@ private:
     vector<string> stops;
     int** adjMatrix;
     int size;
-    static const int INF = 999999;
+    static const int INF;
     
     void rebuildAdjMatrix();
     int getStopIndex(string stopName);
@@ -41,6 +41,7 @@ public:
     vector<Route> getRoutes();
     vector<string> getAllStops();
     int getSize();
+    int** getMatrix();
 };
 
 #endif

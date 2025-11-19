@@ -17,13 +17,10 @@ public:
     Route(string routeName);
     Route(string routeName, vector<string> stops, int** routeMatrix, int size);
     
-    // Constructor de copia
     Route(const Route& other);
     
-    // Operador de asignación
     Route& operator=(const Route& other);
     
-    // Destructor
     ~Route();
     
     void printStops();

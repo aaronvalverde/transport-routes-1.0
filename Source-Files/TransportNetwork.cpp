@@ -7,6 +7,8 @@
 
 using namespace std;
 
+const int TransportNetwork::INF = 999999;
+
 TransportNetwork::TransportNetwork(){
     size = 0;
     adjMatrix = nullptr;
@@ -32,12 +34,10 @@ void TransportNetwork::addRoute(Route route){
         }
     }
     
-    // Reconstruir matriz de adyacencia
     rebuildAdjMatrix();
 }
 
 void TransportNetwork::rebuildAdjMatrix(){
-    // Liberar matriz anterior
     if(adjMatrix != nullptr){
         for(int i = 0; i < size; i++){
             delete[] adjMatrix[i];
@@ -47,7 +47,6 @@ void TransportNetwork::rebuildAdjMatrix(){
     
     size = stops.size();
     
-    // Inicializar nueva matriz con infinito
     adjMatrix = new int*[size];
     for(int i = 0; i < size; i++){
         adjMatrix[i] = new int[size];
@@ -56,7 +55,6 @@ void TransportNetwork::rebuildAdjMatrix(){
         }
     }
     
-    // Llenar matriz con datos de rutas
     for(auto& route : routes){
         int** routeMatrix = route.getMatrix();
         vector<string> routeStops = route.getStops();
@@ -134,7 +132,6 @@ vector<string> TransportNetwork::dijkstra(string origin, string destination){
         return path;
     }
     
-    // Reconstruir camino
     int current = end;
     while(current != -1){
         path.insert(path.begin(), stops[current]);
@@ -251,7 +248,6 @@ vector<Edge> TransportNetwork::kruskal(){
     vector<Edge> mst;
     vector<Edge> edges;
     
-    // Recolectar todas las aristas
     for(int i = 0; i < size; i++){
         for(int j = i + 1; j < size; j++){
             if(adjMatrix[i][j] != INF && adjMatrix[i][j] != 0){
@@ -260,7 +256,6 @@ vector<Edge> TransportNetwork::kruskal(){
         }
     }
     
-    // Ordenar aristas por peso
     sort(edges.begin(), edges.end(), [](Edge& a, Edge& b){
         return a.weight < b.weight;
     });
@@ -357,4 +352,8 @@ vector<string> TransportNetwork::getAllStops(){
 
 int TransportNetwork::getSize(){
     return size;
+}
+
+int** TransportNetwork::getMatrix(){
+    return adjMatrix;
 }

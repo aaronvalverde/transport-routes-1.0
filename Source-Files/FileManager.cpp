@@ -28,16 +28,13 @@ void FileManager::loadUsers(string filename, UserTree<User>& tree, Node<User>*& 
         getline(ss, line, ',');
         id = stol(line);
         
-        // Leer Nombre (puede tener espacios)
         getline(ss, name, ',');
-        // Eliminar espacios al inicio y final
         size_t start = name.find_first_not_of(" \t");
         size_t end = name.find_last_not_of(" \t");
         if(start != string::npos && end != string::npos){
             name = name.substr(start, end - start + 1);
         }
         
-        // Leer Edad
         getline(ss, ageStr, ',');
         age = stoi(ageStr);
         
@@ -97,20 +94,16 @@ void FileManager::loadRoutes(string filename, TransportNetwork& network){
     
     try {
         while(getline(file, line)){
-            // Saltar líneas vacías y comentarios
             if(line.empty() || line[0] == '#') continue;
             
-            // Eliminar espacios en blanco al inicio y final
             size_t start = line.find_first_not_of(" \t\r\n");
             size_t end = line.find_last_not_of(" \t\r\n");
             if(start == string::npos) continue;
             line = line.substr(start, end - start + 1);
             
-            // Formato: NombreRuta
             string routeName = line;
             cout << "Cargando ruta: " << routeName << "\n";
             
-            // Leer número de paradas
             if(!getline(file, line)){
                 cout << "ERROR: No se pudo leer el número de paradas\n";
                 break;
@@ -119,7 +112,6 @@ void FileManager::loadRoutes(string filename, TransportNetwork& network){
             int numStops = stoi(line);
             cout << "  Número de paradas: " << numStops << "\n";
             
-            // Leer paradas
             vector<string> stops;
             for(int i = 0; i < numStops; i++){
                 if(!getline(file, line)){
@@ -139,7 +131,6 @@ void FileManager::loadRoutes(string filename, TransportNetwork& network){
                 cout << "    Parada " << (i+1) << ": " << line << "\n";
             }
             
-            // Leer matriz de adyacencia
             int** matrix = new int*[numStops];
             for(int i = 0; i < numStops; i++){
                 matrix[i] = new int[numStops];
@@ -161,7 +152,6 @@ void FileManager::loadRoutes(string filename, TransportNetwork& network){
                 for(int j = 0; j < numStops; j++){
                     if(!getline(ss, value, ',')){
                         cout << "ERROR: Formato de matriz incorrecto en fila " << i << "\n";
-                        // Liberar memoria
                         for(int k = 0; k <= i; k++){
                             delete[] matrix[k];
                         }
@@ -170,7 +160,6 @@ void FileManager::loadRoutes(string filename, TransportNetwork& network){
                         return;
                     }
                     
-                    // Limpiar espacios
                     start = value.find_first_not_of(" \t\r\n");
                     end = value.find_last_not_of(" \t\r\n");
                     if(start != string::npos){
@@ -185,7 +174,6 @@ void FileManager::loadRoutes(string filename, TransportNetwork& network){
                 }
             }
             
-            // Crear y agregar la ruta
             Route route(routeName, stops, matrix, numStops);
             network.addRoute(route);
             routeCount++;

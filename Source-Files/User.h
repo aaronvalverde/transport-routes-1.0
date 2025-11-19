@@ -16,10 +16,10 @@ class User {
     User(long ID, string name, int age, long balance);
     void print();
 
-    long getID();
+    long getID() const;
     string getName() const;
-    int getAge();
-    long getBalance();
+    int getAge() const;
+    long getBalance() const;
     void setBalance(long balance);
 };
 

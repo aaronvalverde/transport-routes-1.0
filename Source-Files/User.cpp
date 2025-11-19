@@ -21,7 +21,7 @@ void User::print(){
     cout << "Saldo: " << balance << endl;
 }
 
-long User::getID(){
+long User::getID() const {
     return ID;
 }
 
@@ -29,14 +29,14 @@ string User::getName() const{
     return name;
 }
 
-int User::getAge(){
+int User::getAge() const {
     return age;
 }
 
-long User::getBalance(){
+long User::getBalance() const {
     return balance;
 }
 
-void User::setBalance(long balance){
+void User::setBalance(long balance) {
     this->balance = balance;
 }
